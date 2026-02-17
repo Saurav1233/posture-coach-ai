@@ -1,0 +1,89 @@
+{
+  "exercise": "pushup",
+  "n_frames": 2800,
+  "n_videos": 7,
+  "note": "Demo profile \u2014 replace with trained profile from real videos",
+  "features": {
+    "left_elbow_angle": {
+      "mean": 110.0,
+      "std": 25.0,
+      "median": 108.0,
+      "p5": 68.0,
+      "p95": 160.0,
+      "n_samples": 2800,
+      "n_outliers_removed": 0
+    },
+    "right_elbow_angle": {
+      "mean": 111.0,
+      "std": 25.0,
+      "median": 109.0,
+      "p5": 69.0,
+      "p95": 161.0,
+      "n_samples": 2800,
+      "n_outliers_removed": 0
+    },
+    "body_alignment_angle": {
+      "mean": 7.0,
+      "std": 5.0,
+      "median": 6.5,
+      "p5": 1.0,
+      "p95": 16.0,
+      "n_samples": 2800,
+      "n_outliers_removed": 0
+    },
+    "hip_sag_deviation": {
+      "mean": 0.06,
+      "std": 0.05,
+      "median": 0.05,
+      "p5": 0.01,
+      "p95": 0.15,
+      "n_samples": 2800,
+      "n_outliers_removed": 0
+    },
+    "head_alignment_angle": {
+      "mean": 10.0,
+      "std": 6.0,
+      "median": 9.5,
+      "p5": 2.0,
+      "p95": 20.0,
+      "n_samples": 2800,
+      "n_outliers_removed": 0
+    },
+    "elbow_symmetry_ratio": {
+      "mean": 0.03,
+      "std": 0.04,
+      "median": 0.02,
+      "p5": 0.0,
+      "p95": 0.1,
+      "n_samples": 2800,
+      "n_outliers_removed": 0
+    },
+    "shoulder_width_ratio": {
+      "mean": 1.35,
+      "std": 0.15,
+      "median": 1.35,
+      "p5": 1.08,
+      "p95": 1.62,
+      "n_samples": 2800,
+      "n_outliers_removed": 0
+    },
+    "left_shoulder_angle": {
+      "mean": 55.0,
+      "std": 10.0,
+      "median": 54.5,
+      "p5": 37.0,
+      "p95": 72.0,
+      "n_samples": 2800,
+      "n_outliers_removed": 0
+    },
+    "right_shoulder_angle": {
+      "mean": 56.0,
+      "std": 10.0,
+      "median": 55.5,
+      "p5": 38.0,
+      "p95": 73.0,
+      "n_samples": 2800,
+      "n_outliers_removed": 0
+    }
+  }
+}

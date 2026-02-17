@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session Summary – PostureCoach AI</title>
+  <link rel="stylesheet" href="{% static 'posture_app/css/style.css' %}" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-name">PostureCoach<span class="brand-ai"> AI</span></span>
+      </div>
+      <nav class="header-actions">
+        <a href="{% url 'index' %}" class="btn btn-primary">← Back to Coach</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="summary-body">
+    <h1 class="summary-title">Session Complete</h1>
+    <p class="summary-subtitle">{{ exercise_label }} — {{ duration_s }}s session</p>
+
+    <!-- ── Key Metrics ── -->
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-metric">{{ reps }}</div>
+        <div class="summary-label">Repetitions</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-metric {% if avg_score >= 75 %}metric-good{% elif avg_score >= 50 %}metric-warn{% else %}metric-poor{% endif %}">
+          {{ avg_score }}
+        </div>
+        <div class="summary-label">Avg. Score</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-metric metric-good">{{ max_score }}</div>
+        <div class="summary-label">Best Score</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-metric {% if min_score >= 75 %}metric-good{% elif min_score >= 50 %}metric-warn{% else %}metric-poor{% endif %}">
+          {{ min_score }}
+        </div>
+        <div class="summary-label">Min Score</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-metric">{{ pct_good }}%</div>
+        <div class="summary-label">Good Form Frames</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-metric">{{ total_frames }}</div>
+        <div class="summary-label">Frames Analyzed</div>
+      </div>
+    </div>
+
+    <!-- ── Score Timeline Chart ── -->
+    <section class="summary-section">
+      <h2 class="section-title">Score Over Time</h2>
+      <div class="chart-container">
+        <canvas id="score-chart"></canvas>
+      </div>
+    </section>
+
+    <!-- ── Overall Rating ── -->
+    <section class="summary-section rating-section">
+      {% if avg_score >= 75 %}
+        <div class="rating rating-excellent">
+          <div class="rating-icon">🏆</div>
+          <div class="rating-label">Excellent Form!</div>
+          <div class="rating-desc">Your {{ exercise_label }} technique is on point. Keep it up!</div>
+        </div>
+      {% elif avg_score >= 50 %}
+        <div class="rating rating-good">
+          <div class="rating-icon">💪</div>
+          <div class="rating-label">Good Progress</div>
+          <div class="rating-desc">Solid workout! There are a few areas to refine. Review the feedback from your session.</div>
+        </div>
+      {% else %}
+        <div class="rating rating-needs-work">
+          <div class="rating-icon">📋</div>
+          <div class="rating-label">Needs Attention</div>
+          <div class="rating-desc">Focus on your form — try a lower weight and pay attention to the live feedback cues.</div>
+        </div>
+      {% endif %}
+    </section>
+
+    <div class="summary-actions">
+      <a href="{% url 'index' %}" class="btn btn-primary btn-lg">Start New Session</a>
+    </div>
+  </main>
+
+  <script>
+    // Score history mini chart
+    const history = {{ score_history_json|safe }};
+  </script>
+  <script src="{% static 'posture_app/js/summary_chart.js' %}"></script>
+</body>
+</html>

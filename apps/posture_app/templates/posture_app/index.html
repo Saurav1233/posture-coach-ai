@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PostureCoach AI</title>
+  <link rel="stylesheet" href="{% static 'posture_app/css/style.css' %}" />
+</head>
+<body>
+  <!-- ═══════════════════════════════════════════════ HEADER ══ -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-name">PostureCoach<span class="brand-ai"> AI</span></span>
+      </div>
+      <nav class="header-actions">
+        <a href="{% url 'session_summary' %}" class="btn btn-ghost" id="btn-summary">Session Summary</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════════════ MAIN LAYOUT ══ -->
+  <main class="app-body">
+
+    <!-- LEFT PANEL: Controls + Stats -->
+    <aside class="panel panel-left">
+      <!-- Exercise Selector -->
+      <section class="card card-control">
+        <h3 class="card-title">Exercise</h3>
+        <div class="select-wrapper">
+          <select id="exercise-select" class="exercise-select">
+            {% for ex_id, ex_label in exercises %}
+              <option value="{{ ex_id }}"
+                {% if ex_id == default_exercise %}selected{% endif %}>
+                {{ ex_label }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </section>
+
+      <!-- Camera Controls -->
+      <section class="card card-control">
+        <h3 class="card-title">Camera</h3>
+        <div class="btn-group">
+          <button id="btn-start" class="btn btn-primary btn-lg">
+            <span class="btn-icon">▶</span> Start Camera
+          </button>
+          <button id="btn-stop" class="btn btn-danger btn-lg" disabled>
+            <span class="btn-icon">■</span> Stop
+          </button>
+        </div>
+        <div id="camera-status" class="status-pill status-idle">Camera Off</div>
+      </section>
+
+      <!-- Posture Score -->
+      <section class="card card-score">
+        <h3 class="card-title">Posture Score</h3>
+        <div class="score-ring-container">
+          <svg class="score-ring" viewBox="0 0 120 120" width="120" height="120">
+            <circle class="ring-bg" cx="60" cy="60" r="50" />
+            <circle class="ring-fill" id="score-ring-fill" cx="60" cy="60" r="50"
+                    stroke-dasharray="314" stroke-dashoffset="314" />
+          </svg>
+          <div class="score-ring-label">
+            <span id="score-value" class="score-number">--</span>
+            <span class="score-unit">/100</span>
+          </div>
+        </div>
+        <div id="posture-status" class="posture-status status-idle">Waiting...</div>
+      </section>
+
+      <!-- Repetition Counter -->
+      <section class="card card-reps">
+        <h3 class="card-title">Repetitions</h3>
+        <div class="rep-display">
+          <span id="rep-count" class="rep-number">0</span>
+          <span class="rep-label">reps</span>
+        </div>
+        <div id="rep-state-badge" class="rep-state-badge">idle</div>
+        <button id="btn-reset-reps" class="btn btn-ghost btn-sm mt-8">Reset Reps</button>
+      </section>
+    </aside>
+
+    <!-- CENTER PANEL: Camera Feed -->
+    <section class="panel panel-center">
+      <div class="video-container" id="video-container">
+        <!-- Hidden webcam input -->
+        <video id="webcam-video" autoplay playsinline muted class="hidden"></video>
+        <!-- Canvas for capture (invisible) -->
+        <canvas id="capture-canvas" class="hidden"></canvas>
+        <!-- Annotated output from server -->
+        <img id="annotated-frame" class="video-frame" src="" alt="Camera feed" />
+        <!-- Overlay when camera is off -->
+        <div id="camera-overlay" class="camera-overlay">
+          <div class="overlay-inner">
+            <div class="overlay-icon">📷</div>
+            <div class="overlay-text">Press <strong>Start Camera</strong> to begin</div>
+          </div>
+        </div>
+        <!-- FPS counter -->
+        <div id="fps-display" class="fps-display hidden">0 fps</div>
+      </div>
+
+      <!-- Processing indicator -->
+      <div id="processing-bar" class="processing-bar hidden"></div>
+    </section>
+
+    <!-- RIGHT PANEL: Feedback -->
+    <aside class="panel panel-right">
+      <!-- Live Feedback -->
+      <section class="card card-feedback">
+        <h3 class="card-title">Live Feedback</h3>
+        <ul id="feedback-list" class="feedback-list">
+          <li class="feedback-item feedback-neutral">Start your exercise to receive feedback.</li>
+        </ul>
+      </section>
+
+      <!-- Feature Breakdown -->
+      <section class="card card-features">
+        <h3 class="card-title">Joint Analysis</h3>
+        <div id="feature-bars" class="feature-bars">
+          <div class="feature-placeholder">Waiting for pose detection...</div>
+        </div>
+      </section>
+
+      <!-- Upload Video -->
+      <section class="card card-upload">
+        <h3 class="card-title">Analyze Video</h3>
+        <p class="upload-hint">Upload a recorded MP4 to analyze your form offline.</p>
+        <label class="btn btn-ghost btn-upload" for="video-upload-input">
+          <span>📁 Choose MP4 File</span>
+          <input type="file" id="video-upload-input" accept="video/mp4" class="hidden" />
+        </label>
+        <div id="upload-status" class="upload-status hidden"></div>
+        <div id="upload-results" class="upload-results hidden"></div>
+      </section>
+    </aside>
+
+  </main>
+
+  <!-- ═════════════════════════════════════════ REP ANIMATION ══ -->
+  <div id="rep-flash" class="rep-flash hidden">+1 Rep!</div>
+
+  <!-- ════════════════════════════ SCRIPTS ══ -->
+  <script>
+    // Pass Django config to JS
+    window.POSTURE_CONFIG = {
+      csrf_token: "{{ csrf_token }}",
+      default_exercise: "{{ default_exercise }}",
+      score_threshold_good: {{ score_threshold_good }},
+      score_threshold_warning: {{ score_threshold_warning }},
+      api_infer_url: "{% url 'api_infer' %}",
+      api_upload_url: "{% url 'api_upload' %}",
+      api_reset_url: "{% url 'api_reset_session' %}",
+      api_profile_status_url: "{% url 'api_profile_status' %}",
+    };
+  </script>
+  <script src="{% static 'posture_app/js/coach.js' %}"></script>
+</body>
+</html>

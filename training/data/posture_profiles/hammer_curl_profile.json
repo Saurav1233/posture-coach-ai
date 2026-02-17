@@ -1,0 +1,98 @@
+{
+  "exercise": "hammer_curl",
+  "n_frames": 2200,
+  "n_videos": 6,
+  "note": "Demo profile \u2014 replace with trained profile from real videos",
+  "features": {
+    "left_elbow_angle": {
+      "mean": 90.0,
+      "std": 40.0,
+      "median": 88.0,
+      "p5": 30.0,
+      "p95": 155.0,
+      "n_samples": 2200,
+      "n_outliers_removed": 0
+    },
+    "right_elbow_angle": {
+      "mean": 91.0,
+      "std": 40.0,
+      "median": 89.0,
+      "p5": 31.0,
+      "p95": 156.0,
+      "n_samples": 2200,
+      "n_outliers_removed": 0
+    },
+    "trunk_lean_angle": {
+      "mean": 6.0,
+      "std": 4.0,
+      "median": 5.5,
+      "p5": 1.0,
+      "p95": 13.0,
+      "n_samples": 2200,
+      "n_outliers_removed": 0
+    },
+    "left_upper_arm_vertical": {
+      "mean": 9.0,
+      "std": 5.0,
+      "median": 8.5,
+      "p5": 2.0,
+      "p95": 18.0,
+      "n_samples": 2200,
+      "n_outliers_removed": 0
+    },
+    "right_upper_arm_vertical": {
+      "mean": 9.0,
+      "std": 5.0,
+      "median": 8.5,
+      "p5": 2.0,
+      "p95": 18.0,
+      "n_samples": 2200,
+      "n_outliers_removed": 0
+    },
+    "left_shoulder_angle": {
+      "mean": 38.0,
+      "std": 8.0,
+      "median": 37.5,
+      "p5": 24.0,
+      "p95": 52.0,
+      "n_samples": 2200,
+      "n_outliers_removed": 0
+    },
+    "right_shoulder_angle": {
+      "mean": 38.0,
+      "std": 8.0,
+      "median": 37.5,
+      "p5": 24.0,
+      "p95": 52.0,
+      "n_samples": 2200,
+      "n_outliers_removed": 0
+    },
+    "elbow_symmetry_ratio": {
+      "mean": 0.04,
+      "std": 0.04,
+      "median": 0.03,
+      "p5": 0.0,
+      "p95": 0.11,
+      "n_samples": 2200,
+      "n_outliers_removed": 0
+    },
+    "left_forearm_neutral": {
+      "mean": 8.0,
+      "std": 5.0,
+      "median": 7.5,
+      "p5": 1.5,
+      "p95": 17.0,
+      "n_samples": 2200,
+      "n_outliers_removed": 0
+    },
+    "right_forearm_neutral": {
+      "mean": 8.0,
+      "std": 5.0,
+      "median": 7.5,
+      "p5": 1.5,
+      "p95": 17.0,
+      "n_samples": 2200,
+      "n_outliers_removed": 0
+    }
+  }
+}
