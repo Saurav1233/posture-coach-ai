@@ -78,10 +78,10 @@ def extract_features_from_videos(
     module = get_feature_module(exercise)
     extractor = PoseExtractor(
         static_image_mode=False,
-        model_complexity=2,    # Use highest quality for training
+        model_complexity=1,    # Use higher quality for training
         smooth_landmarks=True,
         min_detection_confidence=0.7,
-        min_tracking_confidence=0.6,
+        min_tracking_confidence=0.5,
     )
 
     video_files = list(video_dir.glob("*.mp4")) + list(video_dir.glob("*.MP4"))

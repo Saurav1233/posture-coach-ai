@@ -1,89 +1,88 @@
 {
   "exercise": "pushup",
-  "n_frames": 2800,
-  "n_videos": 7,
-  "note": "Demo profile \u2014 replace with trained profile from real videos",
+  "n_frames": 2254,
+  "n_videos": 25,
   "features": {
     "left_elbow_angle": {
-      "mean": 110.0,
-      "std": 25.0,
-      "median": 108.0,
-      "p5": 68.0,
-      "p95": 160.0,
-      "n_samples": 2800,
+      "mean": 129.9887,
+      "std": 42.7383,
+      "median": 146.1089,
+      "p5": 40.0506,
+      "p95": 173.73,
+      "n_samples": 2254,
       "n_outliers_removed": 0
     },
     "right_elbow_angle": {
-      "mean": 111.0,
-      "std": 25.0,
-      "median": 109.0,
-      "p5": 69.0,
-      "p95": 161.0,
-      "n_samples": 2800,
+      "mean": 126.1649,
+      "std": 46.8383,
+      "median": 145.2372,
+      "p5": 42.8697,
+      "p95": 176.5626,
+      "n_samples": 2254,
       "n_outliers_removed": 0
     },
     "body_alignment_angle": {
-      "mean": 7.0,
-      "std": 5.0,
-      "median": 6.5,
-      "p5": 1.0,
-      "p95": 16.0,
-      "n_samples": 2800,
-      "n_outliers_removed": 0
+      "mean": 10.8197,
+      "std": 8.5063,
+      "median": 9.2456,
+      "p5": 1.1461,
+      "p95": 27.3676,
+      "n_samples": 2030,
+      "n_outliers_removed": 224
     },
     "hip_sag_deviation": {
-      "mean": 0.06,
-      "std": 0.05,
-      "median": 0.05,
-      "p5": 0.01,
-      "p95": 0.15,
-      "n_samples": 2800,
-      "n_outliers_removed": 0
+      "mean": 0.1076,
+      "std": 0.0842,
+      "median": 0.089,
+      "p5": 0.0099,
+      "p95": 0.2651,
+      "n_samples": 2234,
+      "n_outliers_removed": 20
     },
     "head_alignment_angle": {
-      "mean": 10.0,
-      "std": 6.0,
-      "median": 9.5,
-      "p5": 2.0,
-      "p95": 20.0,
-      "n_samples": 2800,
+      "mean": 40.6942,
+      "std": 20.866,
+      "median": 43.8735,
+      "p5": 1.8523,
+      "p95": 68.1698,
+      "n_samples": 2254,
       "n_outliers_removed": 0
     },
     "elbow_symmetry_ratio": {
-      "mean": 0.03,
-      "std": 0.04,
-      "median": 0.02,
-      "p5": 0.0,
-      "p95": 0.1,
-      "n_samples": 2800,
-      "n_outliers_removed": 0
+      "mean": 0.0964,
+      "std": 0.118,
+      "median": 0.0501,
+      "p5": 0.0031,
+      "p95": 0.3834,
+      "n_samples": 2066,
+      "n_outliers_removed": 188
     },
     "shoulder_width_ratio": {
-      "mean": 1.35,
-      "std": 0.15,
-      "median": 1.35,
-      "p5": 1.08,
-      "p95": 1.62,
-      "n_samples": 2800,
-      "n_outliers_removed": 0
+      "mean": 2.053,
+      "std": 0.7147,
+      "median": 1.9911,
+      "p5": 1.041,
+      "p95": 3.4197,
+      "n_samples": 2188,
+      "n_outliers_removed": 66
     },
     "left_shoulder_angle": {
-      "mean": 55.0,
-      "std": 10.0,
-      "median": 54.5,
-      "p5": 37.0,
-      "p95": 72.0,
-      "n_samples": 2800,
-      "n_outliers_removed": 0
+      "mean": 49.6237,
+      "std": 24.6094,
+      "median": 52.6468,
+      "p5": 7.6365,
+      "p95": 80.4675,
+      "n_samples": 2156,
+      "n_outliers_removed": 98
     },
     "right_shoulder_angle": {
-      "mean": 56.0,
-      "std": 10.0,
-      "median": 55.5,
-      "p5": 38.0,
-      "p95": 73.0,
-      "n_samples": 2800,
-      "n_outliers_removed": 0
+      "mean": 48.9144,
+      "std": 28.4833,
+      "median": 53.7462,
+      "p5": 6.6711,
+      "p95": 91.3959,
+      "n_samples": 2184,
+      "n_outliers_removed": 70
     }
   }
 }

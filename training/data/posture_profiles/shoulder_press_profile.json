@@ -1,98 +1,97 @@
 {
   "exercise": "shoulder_press",
-  "n_frames": 2600,
-  "n_videos": 7,
-  "note": "Demo profile \u2014 replace with trained profile from real videos",
+  "n_frames": 3222,
+  "n_videos": 20,
   "features": {
     "left_elbow_angle": {
-      "mean": 130.0,
-      "std": 35.0,
-      "median": 128.0,
-      "p5": 78.0,
-      "p95": 180.0,
-      "n_samples": 2600,
+      "mean": 97.7222,
+      "std": 57.508,
+      "median": 106.3514,
+      "p5": 12.6268,
+      "p95": 171.2407,
+      "n_samples": 3222,
       "n_outliers_removed": 0
     },
     "right_elbow_angle": {
-      "mean": 131.0,
-      "std": 35.0,
-      "median": 129.0,
-      "p5": 79.0,
-      "p95": 180.0,
-      "n_samples": 2600,
+      "mean": 102.459,
+      "std": 54.2162,
+      "median": 112.0232,
+      "p5": 21.4424,
+      "p95": 171.829,
+      "n_samples": 3222,
       "n_outliers_removed": 0
     },
     "left_shoulder_abduction": {
-      "mean": 88.0,
-      "std": 12.0,
-      "median": 87.5,
-      "p5": 67.0,
-      "p95": 109.0,
-      "n_samples": 2600,
-      "n_outliers_removed": 0
+      "mean": 126.3984,
+      "std": 23.3038,
+      "median": 123.4256,
+      "p5": 92.7253,
+      "p95": 169.5518,
+      "n_samples": 3218,
+      "n_outliers_removed": 4
     },
     "right_shoulder_abduction": {
-      "mean": 89.0,
-      "std": 12.0,
-      "median": 88.5,
-      "p5": 68.0,
-      "p95": 110.0,
-      "n_samples": 2600,
+      "mean": 128.1534,
+      "std": 23.8604,
+      "median": 124.4642,
+      "p5": 95.334,
+      "p95": 171.9178,
+      "n_samples": 3222,
       "n_outliers_removed": 0
     },
     "trunk_lean_angle": {
-      "mean": 7.0,
-      "std": 4.0,
-      "median": 6.5,
-      "p5": 1.0,
-      "p95": 14.0,
-      "n_samples": 2600,
-      "n_outliers_removed": 0
+      "mean": 3.7942,
+      "std": 3.0093,
+      "median": 3.114,
+      "p5": 0.1663,
+      "p95": 9.2924,
+      "n_samples": 3182,
+      "n_outliers_removed": 40
     },
     "left_wrist_over_elbow": {
-      "mean": 8.0,
-      "std": 6.0,
-      "median": 7.5,
-      "p5": 1.0,
-      "p95": 19.0,
-      "n_samples": 2600,
-      "n_outliers_removed": 0
+      "mean": 7.2424,
+      "std": 5.0344,
+      "median": 6.4681,
+      "p5": 0.6744,
+      "p95": 15.7694,
+      "n_samples": 3214,
+      "n_outliers_removed": 8
     },
     "right_wrist_over_elbow": {
-      "mean": 8.0,
-      "std": 6.0,
-      "median": 7.5,
-      "p5": 1.0,
-      "p95": 19.0,
-      "n_samples": 2600,
-      "n_outliers_removed": 0
+      "mean": 6.0855,
+      "std": 4.2373,
+      "median": 5.3192,
+      "p5": 0.5816,
+      "p95": 13.9227,
+      "n_samples": 3202,
+      "n_outliers_removed": 20
     },
     "elbow_symmetry_ratio": {
-      "mean": 0.03,
-      "std": 0.04,
-      "median": 0.02,
-      "p5": 0.0,
-      "p95": 0.1,
-      "n_samples": 2600,
-      "n_outliers_removed": 0
+      "mean": 0.1408,
+      "std": 0.1754,
+      "median": 0.0691,
+      "p5": 0.0062,
+      "p95": 0.6169,
+      "n_samples": 2880,
+      "n_outliers_removed": 342
     },
     "shoulder_symmetry_ratio": {
-      "mean": 0.03,
-      "std": 0.04,
-      "median": 0.02,
-      "p5": 0.0,
-      "p95": 0.1,
-      "n_samples": 2600,
-      "n_outliers_removed": 0
+      "mean": 0.1122,
+      "std": 0.1063,
+      "median": 0.0748,
+      "p5": 0.0074,
+      "p95": 0.3379,
+      "n_samples": 3146,
+      "n_outliers_removed": 76
     },
     "head_forward_lean": {
-      "mean": 10.0,
-      "std": 6.0,
-      "median": 9.5,
-      "p5": 2.0,
-      "p95": 21.0,
-      "n_samples": 2600,
-      "n_outliers_removed": 0
+      "mean": 4.6334,
+      "std": 3.5659,
+      "median": 4.0393,
+      "p5": 0.2609,
+      "p95": 10.8891,
+      "n_samples": 3180,
+      "n_outliers_removed": 42
     }
   }
 }

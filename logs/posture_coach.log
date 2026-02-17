@@ -7118,3 +7118,16 @@ ImportError: Cannot find mediapipe pose solution. Try: pip install mediapipe==0.
 [2026-02-17 17:56:50,033] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
 [2026-02-17 17:56:50,037] INFO posture_coach: Loaded profile for 'shoulder_press' (2600 frames)
 [2026-02-17 17:56:50,038] INFO posture_coach: Created InferenceEngine for session=xfrgxcmo6lm6eue6yven29sbdsnkxp18 exercise=shoulder_press
+[2026-02-17 18:05:09,381] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 20:36:50,084] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 20:45:20,431] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 20:49:21,030] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 20:52:39,982] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 20:59:11,960] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 20:59:12,007] INFO posture_coach: Loaded profile for 'shoulder_press' (3222 frames)
+[2026-02-17 20:59:12,007] INFO posture_coach: Created InferenceEngine for session=xfrgxcmo6lm6eue6yven29sbdsnkxp18 exercise=shoulder_press
+[2026-02-17 20:59:47,737] DEBUG posture_coach: Rep! shoulder_press total=1 angle=76.2
+[2026-02-17 21:00:19,725] DEBUG posture_coach: Rep! shoulder_press total=2 angle=81.2
+[2026-02-17 21:00:28,328] DEBUG posture_coach: Rep! shoulder_press total=3 angle=69.2
+[2026-02-17 21:00:32,532] DEBUG posture_coach: Rep! shoulder_press total=4 angle=76.9
+[2026-02-17 21:00:37,044] DEBUG posture_coach: Rep! shoulder_press total=5 angle=72.1
