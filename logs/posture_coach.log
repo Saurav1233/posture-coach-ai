@@ -7099,3 +7099,22 @@ Traceback (most recent call last):
     raise ImportError("Cannot find mediapipe pose solution. Try: pip install mediapipe==0.10.32")
 ImportError: Cannot find mediapipe pose solution. Try: pip install mediapipe==0.10.32
 
+[2026-02-17 12:58:48,149] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 12:58:48,179] INFO posture_coach: Loaded profile for 'squat' (3200 frames)
+[2026-02-17 12:58:48,180] INFO posture_coach: Created InferenceEngine for session=xfrgxcmo6lm6eue6yven29sbdsnkxp18 exercise=squat
+[2026-02-17 12:58:56,384] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 12:58:56,420] INFO posture_coach: Loaded profile for 'hammer_curl' (2200 frames)
+[2026-02-17 12:58:56,421] INFO posture_coach: Created InferenceEngine for session=xfrgxcmo6lm6eue6yven29sbdsnkxp18 exercise=hammer_curl
+[2026-02-17 12:58:56,562] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 12:58:56,586] INFO posture_coach: Created InferenceEngine for session=xfrgxcmo6lm6eue6yven29sbdsnkxp18 exercise=hammer_curl
+[2026-02-17 12:58:59,426] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 12:58:59,452] INFO posture_coach: Loaded profile for 'shoulder_press' (2600 frames)
+[2026-02-17 12:58:59,453] INFO posture_coach: Created InferenceEngine for session=xfrgxcmo6lm6eue6yven29sbdsnkxp18 exercise=shoulder_press
+[2026-02-17 12:58:59,573] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 12:58:59,592] INFO posture_coach: Created InferenceEngine for session=xfrgxcmo6lm6eue6yven29sbdsnkxp18 exercise=shoulder_press
+[2026-02-17 12:59:59,607] DEBUG posture_coach: Rep counted: shoulder_press total=1
+[2026-02-17 13:00:14,818] DEBUG posture_coach: Rep counted: shoulder_press total=2
+[2026-02-17 13:00:22,592] DEBUG posture_coach: Rep counted: shoulder_press total=3
+[2026-02-17 17:56:50,033] DEBUG posture_coach: PoseExtractor (Tasks API) initialised
+[2026-02-17 17:56:50,037] INFO posture_coach: Loaded profile for 'shoulder_press' (2600 frames)
+[2026-02-17 17:56:50,038] INFO posture_coach: Created InferenceEngine for session=xfrgxcmo6lm6eue6yven29sbdsnkxp18 exercise=shoulder_press

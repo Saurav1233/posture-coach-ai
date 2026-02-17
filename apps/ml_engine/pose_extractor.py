@@ -1,11 +1,14 @@
 """
 Pose Extraction Module
 ======================
-Compatible with mediapipe >= 0.10.30 (new Tasks API)
-Uses hardcoded landmark indices — no dependency on mp.solutions.pose.PoseLandmark
+Compatible with mediapipe 0.10.30+ (Tasks API)
+Downloads pose_landmarker model automatically on first run.
 """
 
 import logging
+import os
+import urllib.request
+from pathlib import Path
 from typing import Optional
 
 import cv2
@@ -14,7 +17,7 @@ import numpy as np
 logger = logging.getLogger('posture_coach')
 
 # ─────────────────────────────────────────────────────────────────────────────
-# LANDMARK INDEX CONSTANTS (hardcoded — works on ALL mediapipe versions)
+# LANDMARK INDEX CONSTANTS (hardcoded — same in all mediapipe versions)
 # ─────────────────────────────────────────────────────────────────────────────
 NOSE             = 0
 LEFT_EYE_INNER   = 1
@@ -78,28 +81,39 @@ POSE_CONNECTIONS = [
 ]
 
 # ─────────────────────────────────────────────────────────────────────────────
-# MEDIAPIPE POSE — compatible initialisation
+# MODEL DOWNLOAD
 # ─────────────────────────────────────────────────────────────────────────────
-import mediapipe as mp
+MODEL_URL  = "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task"
+MODEL_DIR  = Path(__file__).parent / "models"
+MODEL_PATH = MODEL_DIR / "pose_landmarker_lite.task"
 
-def _get_pose_solution():
-    """Get mp.solutions.pose safely for mediapipe 0.10.x"""
+def _ensure_model():
+    """Download pose landmarker model if not present."""
+    if MODEL_PATH.exists():
+        return str(MODEL_PATH)
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+    logger.info("Downloading pose landmarker model (~5MB)...")
+    print("Downloading MediaPipe pose model (~5MB)... please wait...")
     try:
-        return mp.solutions.pose
-    except AttributeError:
-        pass
-    try:
-        import mediapipe.python.solutions.pose as pose_sol
-        return pose_sol
-    except Exception:
-        pass
-    raise ImportError("Cannot find mediapipe pose solution. Try: pip install mediapipe==0.10.32")
+        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+        print("Model downloaded successfully!")
+        logger.info("Model downloaded to %s", MODEL_PATH)
+        return str(MODEL_PATH)
+    except Exception as e:
+        logger.error("Model download failed: %s", e)
+        raise RuntimeError(
+            f"Failed to download pose model: {e}\n"
+            f"Please manually download from:\n{MODEL_URL}\n"
+            f"And place it at: {MODEL_PATH}"
+        )
 
-
+# ─────────────────────────────────────────────────────────────────────────────
+# POSE EXTRACTOR CLASS
+# ─────────────────────────────────────────────────────────────────────────────
 class PoseExtractor:
     """
-    MediaPipe Pose wrapper — compatible with mediapipe 0.10.30+
-    Uses manual skeleton drawing (no dependency on mp_drawing)
+    MediaPipe Pose wrapper using Tasks API (mediapipe 0.10.30+)
+    Automatically downloads the model file on first use.
     """
 
     MIN_VISIBILITY_THRESHOLD = 0.2
@@ -108,48 +122,78 @@ class PoseExtractor:
     def __init__(
         self,
         static_image_mode: bool = False,
-        model_complexity: int = 1,
+        model_complexity: int = 0,
         smooth_landmarks: bool = True,
         min_detection_confidence: float = 0.3,
         min_tracking_confidence: float = 0.3,
     ):
-        pose_sol = _get_pose_solution()
-        try:
-            self._pose = pose_sol.Pose(
-                static_image_mode=static_image_mode,
-                model_complexity=model_complexity,
-                smooth_landmarks=smooth_landmarks,
-                min_detection_confidence=min_detection_confidence,
-                min_tracking_confidence=min_tracking_confidence,
-            )
-        except TypeError:
-            # Older signature fallback
-            self._pose = pose_sol.Pose(
-                static_image_mode=static_image_mode,
-                min_detection_confidence=min_detection_confidence,
-            )
-        logger.debug("PoseExtractor initialised")
+        from mediapipe.tasks.python.vision import (
+            PoseLandmarker, PoseLandmarkerOptions, RunningMode
+        )
+        from mediapipe.tasks import python as mp_tasks
+
+        model_path = _ensure_model()
+
+        running_mode = RunningMode.IMAGE if static_image_mode else RunningMode.IMAGE
+
+        self._options = PoseLandmarkerOptions(
+            base_options=mp_tasks.BaseOptions(model_asset_path=model_path),
+            running_mode=RunningMode.IMAGE,
+            num_poses=1,
+            min_pose_detection_confidence=min_detection_confidence,
+            min_pose_presence_confidence=min_detection_confidence,
+            min_tracking_confidence=min_tracking_confidence,
+        )
+        self._landmarker = PoseLandmarker.create_from_options(self._options)
+        self._static_mode = static_image_mode
+        logger.debug("PoseExtractor (Tasks API) initialised")
 
     def extract(self, bgr_frame: np.ndarray):
+        """
+        Run pose detection on one BGR frame.
+        Returns (raw_lm, norm_lm, visibility, pose_valid)
+        """
+        import mediapipe as mp
+
         rgb = cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2RGB)
-        rgb.flags.writeable = False
+        h, w = rgb.shape[:2]
+
+        # Create MediaPipe Image
+        mp_image = mp.Image(
+            image_format=mp.ImageFormat.SRGB,
+            data=rgb
+        )
+
         try:
-            results = self._pose.process(rgb)
+            result = self._landmarker.detect(mp_image)
         except Exception as e:
-            logger.error("Pose processing error: %s", e)
+            logger.error("Pose detection error: %s", e)
             return None, None, None, False
 
-        if not results.pose_landmarks:
+        if not result.pose_landmarks or len(result.pose_landmarks) == 0:
             return None, None, None, False
 
-        lm = results.pose_landmarks.landmark
-        raw = np.array([[p.x, p.y, p.z, p.visibility] for p in lm], dtype=np.float32)
+        # Get first pose landmarks
+        landmarks = result.pose_landmarks[0]
+
+        # Build raw array (33, 4) — x, y, z, visibility
+        raw = np.array(
+            [[lm.x, lm.y, lm.z, lm.visibility if hasattr(lm, 'visibility') else 1.0]
+             for lm in landmarks],
+            dtype=np.float32
+        )
+
+        if len(raw) < 33:
+            return None, None, None, False
+
         visibility = raw[:, 3]
 
+        # Check torso visibility
         pose_valid = all(
             visibility[i] >= self.MIN_VISIBILITY_THRESHOLD
             for i in self.TORSO_LANDMARKS
         )
+
         if not pose_valid:
             return raw, None, visibility, False
 
@@ -157,6 +201,7 @@ class PoseExtractor:
         return raw, norm, visibility, True
 
     def draw_skeleton(self, bgr_frame: np.ndarray, raw_landmarks, color_override=None):
+        """Draw colored skeleton on frame."""
         if raw_landmarks is None:
             return bgr_frame.copy()
 
@@ -175,12 +220,13 @@ class PoseExtractor:
                 cv2.line(frame_copy, pts[a], pts[b], color, 2, cv2.LINE_AA)
 
         for i, (x, y) in pts.items():
-            cv2.circle(frame_copy, (x, y), 4, color, -1, cv2.LINE_AA)
-            cv2.circle(frame_copy, (x, y), 4, (255, 255, 255), 1, cv2.LINE_AA)
+            cv2.circle(frame_copy, (x, y), 5, color, -1, cv2.LINE_AA)
+            cv2.circle(frame_copy, (x, y), 5, (255, 255, 255), 1, cv2.LINE_AA)
 
         return frame_copy
 
     def extract_from_video(self, video_path: str, frame_skip: int = 2):
+        """Generator yielding pose data for each frame of a video."""
         cap = cv2.VideoCapture(video_path)
         if not cap.isOpened():
             raise IOError(f"Cannot open video: {video_path}")
@@ -199,14 +245,15 @@ class PoseExtractor:
 
     def close(self):
         try:
-            self._pose.close()
+            self._landmarker.close()
         except Exception:
             pass
 
     def _normalize(self, xyz: np.ndarray) -> np.ndarray:
-        torso_pts = xyz[self.TORSO_LANDMARKS, :]
+        """Torso-center + torso-length normalization."""
+        torso_pts   = xyz[self.TORSO_LANDMARKS, :]
         torso_center = torso_pts.mean(axis=0)
-        centered = xyz - torso_center
+        centered    = xyz - torso_center
         torso_length = np.mean(np.linalg.norm(torso_pts - torso_center, axis=1))
         if torso_length < 1e-6:
             return centered
